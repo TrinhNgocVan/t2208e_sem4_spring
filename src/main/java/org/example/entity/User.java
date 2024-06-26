@@ -13,6 +13,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "user" )
+@ToString
 public class User {
     // mapping  : attribute  , relation
     // mapping class name  <==> table name
@@ -37,6 +38,10 @@ public class User {
     private String updatedBy;
     @Column(name = "updated_time")
     private Date updatedTime;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "department_id" , nullable = true)
+    private Department department;
     @Transient
     private String attribute;
 
@@ -49,6 +54,22 @@ public class User {
     public void preUpdate(){
         this.createdTime = new Date();
         this.updatedTime = new Date();
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public String getAttribute() {
+        return attribute;
+    }
+
+    public void setAttribute(String attribute) {
+        this.attribute = attribute;
     }
 
     public long getId() {

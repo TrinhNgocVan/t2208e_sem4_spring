@@ -8,6 +8,16 @@ public class UserDto  extends  PagingDto{
     private String firstname;
     private String lastname;
     private String address;
+    private DepartmentDto department;
+
+    public DepartmentDto getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(DepartmentDto department) {
+        this.department = department;
+    }
+
     // common field
     private String createdBy;
     private Date createdTime;

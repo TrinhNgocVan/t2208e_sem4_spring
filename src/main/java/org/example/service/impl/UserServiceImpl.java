@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         }
         Page<User> page = userRepository.findAll(userSpecification.filter(dto),
                 PageRequest.of(dto.getPageNumber(),dto.getPageSize(),
-                        Sort.by("username").descending()));
+                        Sort.by("id").ascending()));
         // findAll  = select , count
         PageDto pageDto = new PageDto();
         pageDto.setContent(page.getContent()
