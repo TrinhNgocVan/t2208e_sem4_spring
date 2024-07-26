@@ -1,7 +1,16 @@
 package org.example.dto;
 
-import java.util.Date;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+import java.util.Date;
+//@Getter
+//@Setter
+//@Data
+//@Builder
+//@SuperBuilder
+//@EqualsAndHashCode(callSuper = true)
+//@NoArgsConstructor
 public class UserDto  extends  PagingDto{
     private long  id;   // note  : Long  != long
     private String username; //  Stringpool

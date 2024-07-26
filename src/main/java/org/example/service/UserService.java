@@ -10,6 +10,7 @@ import java.util.List;
 @Service
 public interface UserService {
     User findById(long id);
+    List<User> saveAll(List<UserDto> users);
     PageDto search();
     PageDto search(UserDto userDto);
 }

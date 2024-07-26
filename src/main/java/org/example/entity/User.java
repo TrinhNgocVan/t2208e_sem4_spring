@@ -8,6 +8,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GeneratorType;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,6 +29,13 @@ public class User {
     private String lastname;
     @Column(name = "address")
     private String address;
+    @ManyToMany
+    @JoinTable(
+            name = "course_user"
+            , joinColumns = @JoinColumn(name = "user_id")
+            , inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private List<Course> courses;
 
     // common field
     @Column(name = "created_by")
@@ -38,7 +46,6 @@ public class User {
     private String updatedBy;
     @Column(name = "updated_time")
     private Date updatedTime;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id" , nullable = true)
     private Department department;
