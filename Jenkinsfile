@@ -1,42 +1,40 @@
 pipeline {
-    agent {
-        label 'java-agent'
+    agent { label 'java-agent' } // Agent có Docker
+
+    environment {
+        IMAGE_NAME = 'spring_t2208e:latest'
+        REGISTRY_URL = 'http://localhost:8001'
+        DOCKER_CREDENTIALS_ID = 'habour-credential' // ID credentials trong Jenkins
     }
+
     stages {
-        stage ('Checkout Code') {
+        stage('Checkout') {
             steps {
-                echo 'Checking out source-code ...'
                 checkout scm
             }
         }
-        stage ('Build') {
+
+        stage('Build Docker Image') {
             steps {
-                echo 'Building ...'
-                sh  'mvn clean compile'
+                sh 'docker build -t $IMAGE_NAME .'
             }
         }
-        stage ('Test') {
+
+        stage('Login to Harbor') {
             steps {
-                sh 'mvn test'
-           }
+                withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh 'echo $PASSWORD | docker login $REGISTRY_URL -u $USERNAME --password-stdin'
+                }
+            }
         }
-        stage('Package') {
+
+        stage('Push Image') {
             steps {
-                sh 'mvn package'
-           }
-        }
-        stage('Archive Artifact') {
-            steps {
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                sh '''
+                docker tag $IMAGE_NAME $REGISTRY_URL/project/$IMAGE_NAME
+                docker push $REGISTRY_URL/project/$IMAGE_NAME
+                '''
             }
         }
     }
-     post {
-            success {
-                echo 'Build successful!'
-            }
-            failure {
-                echo ' Build failed!'
-            }
-        }
 }
