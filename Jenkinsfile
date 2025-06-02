@@ -4,13 +4,13 @@ pipeline {
     }
     stages {
         stage ('Checkout Code') {
-            step {
+            steps {
                 echo 'Checking out source-code ...'
                 checkout scm
             }
         }
         stage ('Build') {
-            step {
+            steps {
                 echo 'Building ...'
                 sh  'mvn clean complie'
             }
